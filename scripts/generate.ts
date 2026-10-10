@@ -45,7 +45,7 @@ for (const [path, item] of Object.entries(spec.paths)) {
       const placeholder = segment.match(/^\{(.+)\}$/);
       return placeholder ? `by-${placeholder[1]}` : segment;
     });
-  const task = [...segments, "get"].join(":");
+  const task = ["api", ...segments, "get"].join(":");
   const parameters = new Map<string, Parameter>();
 
   for (const raw of [

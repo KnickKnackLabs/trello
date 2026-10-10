@@ -1,6 +1,6 @@
 [
   {
-    "task": "actions:by-id:board:get",
+    "task": "api:actions:by-id:board:get",
     "path": "/1/actions/{id}/board",
     "summary": "Get the Board for an Action",
     "parameters": [
@@ -21,7 +21,7 @@
     ]
   },
   {
-    "task": "actions:by-id:by-field:get",
+    "task": "api:actions:by-id:by-field:get",
     "path": "/1/actions/{id}/{field}",
     "summary": "Get a specific field on an Action",
     "parameters": [
@@ -42,7 +42,7 @@
     ]
   },
   {
-    "task": "actions:by-id:card:get",
+    "task": "api:actions:by-id:card:get",
     "path": "/1/actions/{id}/card",
     "summary": "Get the Card for an Action",
     "parameters": [
@@ -63,7 +63,7 @@
     ]
   },
   {
-    "task": "actions:by-id:get",
+    "task": "api:actions:by-id:get",
     "path": "/1/actions/{id}",
     "summary": "Get an Action",
     "parameters": [
@@ -126,7 +126,7 @@
     ]
   },
   {
-    "task": "actions:by-id:list:get",
+    "task": "api:actions:by-id:list:get",
     "path": "/1/actions/{id}/list",
     "summary": "Get the List for an Action",
     "parameters": [
@@ -147,7 +147,7 @@
     ]
   },
   {
-    "task": "actions:by-id:member:get",
+    "task": "api:actions:by-id:member:get",
     "path": "/1/actions/{id}/member",
     "summary": "Get the Member of an Action",
     "parameters": [
@@ -168,7 +168,7 @@
     ]
   },
   {
-    "task": "actions:by-id:memberCreator:get",
+    "task": "api:actions:by-id:memberCreator:get",
     "path": "/1/actions/{id}/memberCreator",
     "summary": "Get the Member Creator of an Action",
     "parameters": [
@@ -189,7 +189,7 @@
     ]
   },
   {
-    "task": "actions:by-id:organization:get",
+    "task": "api:actions:by-id:organization:get",
     "path": "/1/actions/{id}/organization",
     "summary": "Get the Organization of an Action",
     "parameters": [
@@ -210,7 +210,7 @@
     ]
   },
   {
-    "task": "actions:by-idAction:reactions:by-id:get",
+    "task": "api:actions:by-idAction:reactions:by-id:get",
     "path": "/1/actions/{idAction}/reactions/{id}",
     "summary": "Get Action's Reaction",
     "parameters": [
@@ -245,7 +245,7 @@
     ]
   },
   {
-    "task": "actions:by-idAction:reactions:get",
+    "task": "api:actions:by-idAction:reactions:get",
     "path": "/1/actions/{idAction}/reactions",
     "summary": "Get Action's Reactions",
     "parameters": [
@@ -273,7 +273,7 @@
     ]
   },
   {
-    "task": "actions:by-idAction:reactionsSummary:get",
+    "task": "api:actions:by-idAction:reactionsSummary:get",
     "path": "/1/actions/{idAction}/reactionsSummary",
     "summary": "List Action's summary of Reactions",
     "parameters": [
@@ -287,7 +287,7 @@
     ]
   },
   {
-    "task": "applications:by-key:compliance:get",
+    "task": "api:applications:by-key:compliance:get",
     "path": "/1/applications/{key}/compliance",
     "summary": "Get Application's compliance data",
     "parameters": [
@@ -300,7 +300,7 @@
     ]
   },
   {
-    "task": "batch:get",
+    "task": "api:batch:get",
     "path": "/1/batch",
     "summary": "Batch Requests",
     "parameters": [
@@ -314,7 +314,7 @@
     ]
   },
   {
-    "task": "boards:by-boardId:actions:get",
+    "task": "api:boards:by-boardId:actions:get",
     "path": "/1/boards/{boardId}/actions",
     "summary": "Get Actions of a Board",
     "parameters": [
@@ -419,7 +419,7 @@
     ]
   },
   {
-    "task": "boards:by-boardId:boardStars:get",
+    "task": "api:boards:by-boardId:boardStars:get",
     "path": "/1/boards/{boardId}/boardStars",
     "summary": "Get boardStars on a Board",
     "parameters": [
@@ -440,7 +440,7 @@
     ]
   },
   {
-    "task": "boards:by-id:boardPlugins:get",
+    "task": "api:boards:by-id:boardPlugins:get",
     "path": "/1/boards/{id}/boardPlugins",
     "summary": "Get Enabled Power-Ups on Board",
     "parameters": [
@@ -454,7 +454,7 @@
     ]
   },
   {
-    "task": "boards:by-id:by-field:get",
+    "task": "api:boards:by-id:by-field:get",
     "path": "/1/boards/{id}/{field}",
     "summary": "Get a field on a Board",
     "parameters": [
@@ -475,7 +475,7 @@
     ]
   },
   {
-    "task": "boards:by-id:cards:by-filter:get",
+    "task": "api:boards:by-id:cards:by-filter:get",
     "path": "/1/boards/{id}/cards/{filter}",
     "summary": "Get filtered Cards on a Board",
     "parameters": [
@@ -496,7 +496,7 @@
     ]
   },
   {
-    "task": "boards:by-id:cards:get",
+    "task": "api:boards:by-id:cards:get",
     "path": "/1/boards/{id}/cards",
     "summary": "Get Cards on a Board",
     "parameters": [
@@ -510,7 +510,7 @@
     ]
   },
   {
-    "task": "boards:by-id:checklists:get",
+    "task": "api:boards:by-id:checklists:get",
     "path": "/1/boards/{id}/checklists",
     "summary": "Get Checklists on a Board",
     "parameters": [
@@ -524,7 +524,7 @@
     ]
   },
   {
-    "task": "boards:by-id:customFields:get",
+    "task": "api:boards:by-id:customFields:get",
     "path": "/1/boards/{id}/customFields",
     "summary": "Get Custom Fields for Board",
     "parameters": [
@@ -538,7 +538,7 @@
     ]
   },
   {
-    "task": "boards:by-id:exports:by-idExport:download:get",
+    "task": "api:boards:by-id:exports:by-idExport:download:get",
     "path": "/1/boards/{id}/exports/{idExport}/download",
     "summary": "Download an Export for a Board",
     "parameters": [
@@ -560,7 +560,7 @@
     "download": true
   },
   {
-    "task": "boards:by-id:exports:by-idExport:get",
+    "task": "api:boards:by-id:exports:by-idExport:get",
     "path": "/1/boards/{id}/exports/{idExport}",
     "summary": "Get an Export for a Board",
     "parameters": [
@@ -581,7 +581,7 @@
     ]
   },
   {
-    "task": "boards:by-id:exports:mostRecent:get",
+    "task": "api:boards:by-id:exports:mostRecent:get",
     "path": "/1/boards/{id}/exports/mostRecent",
     "summary": "Get a Board's Most Recent Export",
     "parameters": [
@@ -595,7 +595,7 @@
     ]
   },
   {
-    "task": "boards:by-id:get",
+    "task": "api:boards:by-id:get",
     "path": "/1/boards/{id}",
     "summary": "Get a Board",
     "parameters": [
@@ -721,7 +721,7 @@
     ]
   },
   {
-    "task": "boards:by-id:labels:get",
+    "task": "api:boards:by-id:labels:get",
     "path": "/1/boards/{id}/labels",
     "summary": "Get Labels on a Board",
     "parameters": [
@@ -749,7 +749,7 @@
     ]
   },
   {
-    "task": "boards:by-id:lists:by-filter:get",
+    "task": "api:boards:by-id:lists:by-filter:get",
     "path": "/1/boards/{id}/lists/{filter}",
     "summary": "Get filtered Lists on a Board",
     "parameters": [
@@ -770,7 +770,7 @@
     ]
   },
   {
-    "task": "boards:by-id:lists:get",
+    "task": "api:boards:by-id:lists:get",
     "path": "/1/boards/{id}/lists",
     "summary": "Get Lists on a Board",
     "parameters": [
@@ -812,7 +812,7 @@
     ]
   },
   {
-    "task": "boards:by-id:members:get",
+    "task": "api:boards:by-id:members:get",
     "path": "/1/boards/{id}/members",
     "summary": "Get the Members of a Board",
     "parameters": [
@@ -826,7 +826,7 @@
     ]
   },
   {
-    "task": "boards:by-id:memberships:get",
+    "task": "api:boards:by-id:memberships:get",
     "path": "/1/boards/{id}/memberships",
     "summary": "Get Memberships of a Board",
     "parameters": [
@@ -875,7 +875,7 @@
     ]
   },
   {
-    "task": "boards:by-id:plugins:get",
+    "task": "api:boards:by-id:plugins:get",
     "path": "/1/boards/{id}/plugins",
     "summary": "Get Power-Ups on a Board",
     "parameters": [
@@ -896,7 +896,7 @@
     ]
   },
   {
-    "task": "cards:by-id:actions:get",
+    "task": "api:cards:by-id:actions:get",
     "path": "/1/cards/{id}/actions",
     "summary": "Get Actions on a Card",
     "parameters": [
@@ -924,7 +924,7 @@
     ]
   },
   {
-    "task": "cards:by-id:attachments:by-idAttachment:get",
+    "task": "api:cards:by-id:attachments:by-idAttachment:get",
     "path": "/1/cards/{id}/attachments/{idAttachment}",
     "summary": "Get an Attachment on a Card",
     "parameters": [
@@ -952,7 +952,7 @@
     ]
   },
   {
-    "task": "cards:by-id:attachments:get",
+    "task": "api:cards:by-id:attachments:get",
     "path": "/1/cards/{id}/attachments",
     "summary": "Get Attachments on a Card",
     "parameters": [
@@ -980,7 +980,7 @@
     ]
   },
   {
-    "task": "cards:by-id:board:get",
+    "task": "api:cards:by-id:board:get",
     "path": "/1/cards/{id}/board",
     "summary": "Get the Board the Card is on",
     "parameters": [
@@ -1001,7 +1001,7 @@
     ]
   },
   {
-    "task": "cards:by-id:by-field:get",
+    "task": "api:cards:by-id:by-field:get",
     "path": "/1/cards/{id}/{field}",
     "summary": "Get a field on a Card",
     "parameters": [
@@ -1022,7 +1022,7 @@
     ]
   },
   {
-    "task": "cards:by-id:checkItem:by-idCheckItem:get",
+    "task": "api:cards:by-id:checkItem:by-idCheckItem:get",
     "path": "/1/cards/{id}/checkItem/{idCheckItem}",
     "summary": "Get checkItem on a Card",
     "parameters": [
@@ -1050,7 +1050,7 @@
     ]
   },
   {
-    "task": "cards:by-id:checkItemStates:get",
+    "task": "api:cards:by-id:checkItemStates:get",
     "path": "/1/cards/{id}/checkItemStates",
     "summary": "Get checkItems on a Card",
     "parameters": [
@@ -1071,7 +1071,7 @@
     ]
   },
   {
-    "task": "cards:by-id:checklists:get",
+    "task": "api:cards:by-id:checklists:get",
     "path": "/1/cards/{id}/checklists",
     "summary": "Get Checklists on a Card",
     "parameters": [
@@ -1113,7 +1113,7 @@
     ]
   },
   {
-    "task": "cards:by-id:customFieldItems:get",
+    "task": "api:cards:by-id:customFieldItems:get",
     "path": "/1/cards/{id}/customFieldItems",
     "summary": "Get Custom Field Items for a Card",
     "parameters": [
@@ -1127,7 +1127,7 @@
     ]
   },
   {
-    "task": "cards:by-id:get",
+    "task": "api:cards:by-id:get",
     "path": "/1/cards/{id}",
     "summary": "Get a Card",
     "parameters": [
@@ -1267,7 +1267,7 @@
     ]
   },
   {
-    "task": "cards:by-id:list:get",
+    "task": "api:cards:by-id:list:get",
     "path": "/1/cards/{id}/list",
     "summary": "Get the List of a Card",
     "parameters": [
@@ -1288,7 +1288,7 @@
     ]
   },
   {
-    "task": "cards:by-id:members:get",
+    "task": "api:cards:by-id:members:get",
     "path": "/1/cards/{id}/members",
     "summary": "Get the Members of a Card",
     "parameters": [
@@ -1309,7 +1309,7 @@
     ]
   },
   {
-    "task": "cards:by-id:membersVoted:get",
+    "task": "api:cards:by-id:membersVoted:get",
     "path": "/1/cards/{id}/membersVoted",
     "summary": "Get Members who have voted on a Card",
     "parameters": [
@@ -1330,7 +1330,7 @@
     ]
   },
   {
-    "task": "cards:by-id:pluginData:get",
+    "task": "api:cards:by-id:pluginData:get",
     "path": "/1/cards/{id}/pluginData",
     "summary": "Get pluginData on a Card",
     "parameters": [
@@ -1344,7 +1344,7 @@
     ]
   },
   {
-    "task": "cards:by-id:stickers:by-idSticker:get",
+    "task": "api:cards:by-id:stickers:by-idSticker:get",
     "path": "/1/cards/{id}/stickers/{idSticker}",
     "summary": "Get a Sticker on a Card",
     "parameters": [
@@ -1372,7 +1372,7 @@
     ]
   },
   {
-    "task": "cards:by-id:stickers:get",
+    "task": "api:cards:by-id:stickers:get",
     "path": "/1/cards/{id}/stickers",
     "summary": "Get Stickers on a Card",
     "parameters": [
@@ -1393,7 +1393,7 @@
     ]
   },
   {
-    "task": "checklists:by-id:board:get",
+    "task": "api:checklists:by-id:board:get",
     "path": "/1/checklists/{id}/board",
     "summary": "Get the Board the Checklist is on",
     "parameters": [
@@ -1414,7 +1414,7 @@
     ]
   },
   {
-    "task": "checklists:by-id:by-field:get",
+    "task": "api:checklists:by-id:by-field:get",
     "path": "/1/checklists/{id}/{field}",
     "summary": "Get field on a Checklist",
     "parameters": [
@@ -1435,7 +1435,7 @@
     ]
   },
   {
-    "task": "checklists:by-id:cards:get",
+    "task": "api:checklists:by-id:cards:get",
     "path": "/1/checklists/{id}/cards",
     "summary": "Get the Card a Checklist is on",
     "parameters": [
@@ -1449,7 +1449,7 @@
     ]
   },
   {
-    "task": "checklists:by-id:checkItems:by-idCheckItem:get",
+    "task": "api:checklists:by-id:checkItems:by-idCheckItem:get",
     "path": "/1/checklists/{id}/checkItems/{idCheckItem}",
     "summary": "Get a Checkitem on a Checklist",
     "parameters": [
@@ -1477,7 +1477,7 @@
     ]
   },
   {
-    "task": "checklists:by-id:checkItems:get",
+    "task": "api:checklists:by-id:checkItems:get",
     "path": "/1/checklists/{id}/checkItems",
     "summary": "Get Checkitems on a Checklist",
     "parameters": [
@@ -1505,7 +1505,7 @@
     ]
   },
   {
-    "task": "checklists:by-id:get",
+    "task": "api:checklists:by-id:get",
     "path": "/1/checklists/{id}",
     "summary": "Get a Checklist",
     "parameters": [
@@ -1547,7 +1547,7 @@
     ]
   },
   {
-    "task": "customFields:by-id:get",
+    "task": "api:customFields:by-id:get",
     "path": "/1/customFields/{id}",
     "summary": "Get a Custom Field",
     "parameters": [
@@ -1561,7 +1561,7 @@
     ]
   },
   {
-    "task": "customFields:by-id:options:by-idCustomFieldOption:get",
+    "task": "api:customFields:by-id:options:by-idCustomFieldOption:get",
     "path": "/1/customFields/{id}/options/{idCustomFieldOption}",
     "summary": "Get Option of Custom Field dropdown",
     "parameters": [
@@ -1582,7 +1582,7 @@
     ]
   },
   {
-    "task": "customFields:by-id:options:get",
+    "task": "api:customFields:by-id:options:get",
     "path": "/1/customFields/{id}/options",
     "summary": "Get Options of Custom Field drop down",
     "parameters": [
@@ -1596,7 +1596,7 @@
     ]
   },
   {
-    "task": "emoji:get",
+    "task": "api:emoji:get",
     "path": "/1/emoji",
     "summary": "List available Emoji",
     "parameters": [
@@ -1617,7 +1617,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:admins:get",
+    "task": "api:enterprises:by-id:admins:get",
     "path": "/1/enterprises/{id}/admins",
     "summary": "Get Enterprise admin Members",
     "parameters": [
@@ -1638,7 +1638,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:auditlog:get",
+    "task": "api:enterprises:by-id:auditlog:get",
     "path": "/1/enterprises/{id}/auditlog",
     "summary": "Get auditlog data for an Enterprise",
     "parameters": [
@@ -1652,7 +1652,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:claimableOrganizations:get",
+    "task": "api:enterprises:by-id:claimableOrganizations:get",
     "path": "/1/enterprises/{id}/claimableOrganizations",
     "summary": "Get ClaimableOrganizations of an Enterprise",
     "parameters": [
@@ -1701,7 +1701,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:get",
+    "task": "api:enterprises:by-id:get",
     "path": "/1/enterprises/{id}",
     "summary": "Get an Enterprise",
     "parameters": [
@@ -1806,7 +1806,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:members:by-idMember:get",
+    "task": "api:enterprises:by-id:members:by-idMember:get",
     "path": "/1/enterprises/{id}/members/{idMember}",
     "summary": "Get a Member of Enterprise",
     "parameters": [
@@ -1848,7 +1848,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:members:get",
+    "task": "api:enterprises:by-id:members:get",
     "path": "/1/enterprises/{id}/members",
     "summary": "Get Members of Enterprise",
     "parameters": [
@@ -1925,7 +1925,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:members:query:get",
+    "task": "api:enterprises:by-id:members:query:get",
     "path": "/1/enterprises/{id}/members/query",
     "summary": "Get Users of an Enterprise",
     "parameters": [
@@ -2002,7 +2002,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:organizations:bulk:by-idOrganizations:get",
+    "task": "api:enterprises:by-id:organizations:bulk:by-idOrganizations:get",
     "path": "/1/enterprises/{id}/organizations/bulk/{idOrganizations}",
     "summary": "Bulk accept a set of organizations to an Enterprise.",
     "parameters": [
@@ -2023,7 +2023,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:organizations:get",
+    "task": "api:enterprises:by-id:organizations:get",
     "path": "/1/enterprises/{id}/organizations",
     "summary": "Get Organizations of an Enterprise",
     "parameters": [
@@ -2065,7 +2065,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:pendingOrganizations:get",
+    "task": "api:enterprises:by-id:pendingOrganizations:get",
     "path": "/1/enterprises/{id}/pendingOrganizations",
     "summary": "Get PendingOrganizations of an Enterprise",
     "parameters": [
@@ -2093,7 +2093,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:signupUrl:get",
+    "task": "api:enterprises:by-id:signupUrl:get",
     "path": "/1/enterprises/{id}/signupUrl",
     "summary": "Get signupUrl for Enterprise",
     "parameters": [
@@ -2135,7 +2135,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:transferrable:bulk:by-idOrganizations:get",
+    "task": "api:enterprises:by-id:transferrable:bulk:by-idOrganizations:get",
     "path": "/1/enterprises/{id}/transferrable/bulk/{idOrganizations}",
     "summary": "Get a bulk list of organizations that can be transferred to an enterprise.",
     "parameters": [
@@ -2156,7 +2156,7 @@
     ]
   },
   {
-    "task": "enterprises:by-id:transferrable:organization:by-idOrganization:get",
+    "task": "api:enterprises:by-id:transferrable:organization:by-idOrganization:get",
     "path": "/1/enterprises/{id}/transferrable/organization/{idOrganization}",
     "summary": "Get whether an organization can be transferred to an enterprise.",
     "parameters": [
@@ -2177,7 +2177,7 @@
     ]
   },
   {
-    "task": "labels:by-id:get",
+    "task": "api:labels:by-id:get",
     "path": "/1/labels/{id}",
     "summary": "Get a Label",
     "parameters": [
@@ -2198,7 +2198,7 @@
     ]
   },
   {
-    "task": "lists:by-id:actions:get",
+    "task": "api:lists:by-id:actions:get",
     "path": "/1/lists/{id}/actions",
     "summary": "Get Actions for a List",
     "parameters": [
@@ -2219,7 +2219,7 @@
     ]
   },
   {
-    "task": "lists:by-id:board:get",
+    "task": "api:lists:by-id:board:get",
     "path": "/1/lists/{id}/board",
     "summary": "Get the Board a List is on",
     "parameters": [
@@ -2240,7 +2240,7 @@
     ]
   },
   {
-    "task": "lists:by-id:cards:get",
+    "task": "api:lists:by-id:cards:get",
     "path": "/1/lists/{id}/cards",
     "summary": "Get Cards in a List",
     "parameters": [
@@ -2254,7 +2254,7 @@
     ]
   },
   {
-    "task": "lists:by-id:get",
+    "task": "api:lists:by-id:get",
     "path": "/1/lists/{id}",
     "summary": "Get a List",
     "parameters": [
@@ -2275,7 +2275,7 @@
     ]
   },
   {
-    "task": "members:by-id:actions:get",
+    "task": "api:members:by-id:actions:get",
     "path": "/1/members/{id}/actions",
     "summary": "Get a Member's Actions",
     "parameters": [
@@ -2296,7 +2296,7 @@
     ]
   },
   {
-    "task": "members:by-id:boardBackgrounds:by-idBackground:get",
+    "task": "api:members:by-id:boardBackgrounds:by-idBackground:get",
     "path": "/1/members/{id}/boardBackgrounds/{idBackground}",
     "summary": "Get a boardBackground of a Member",
     "parameters": [
@@ -2324,7 +2324,7 @@
     ]
   },
   {
-    "task": "members:by-id:boardBackgrounds:get",
+    "task": "api:members:by-id:boardBackgrounds:get",
     "path": "/1/members/{id}/boardBackgrounds",
     "summary": "Get Member's custom Board backgrounds",
     "parameters": [
@@ -2345,7 +2345,7 @@
     ]
   },
   {
-    "task": "members:by-id:boardStars:by-idStar:get",
+    "task": "api:members:by-id:boardStars:by-idStar:get",
     "path": "/1/members/{id}/boardStars/{idStar}",
     "summary": "Get a boardStar of Member",
     "parameters": [
@@ -2366,7 +2366,7 @@
     ]
   },
   {
-    "task": "members:by-id:boardStars:get",
+    "task": "api:members:by-id:boardStars:get",
     "path": "/1/members/{id}/boardStars",
     "summary": "Get a Member's boardStars",
     "parameters": [
@@ -2380,7 +2380,7 @@
     ]
   },
   {
-    "task": "members:by-id:boards:get",
+    "task": "api:members:by-id:boards:get",
     "path": "/1/members/{id}/boards",
     "summary": "Get Boards that Member belongs to",
     "parameters": [
@@ -2429,7 +2429,7 @@
     ]
   },
   {
-    "task": "members:by-id:boardsInvited:get",
+    "task": "api:members:by-id:boardsInvited:get",
     "path": "/1/members/{id}/boardsInvited",
     "summary": "Get Boards the Member has been invited to",
     "parameters": [
@@ -2450,7 +2450,7 @@
     ]
   },
   {
-    "task": "members:by-id:by-field:get",
+    "task": "api:members:by-id:by-field:get",
     "path": "/1/members/{id}/{field}",
     "summary": "Get a field on a Member",
     "parameters": [
@@ -2471,7 +2471,7 @@
     ]
   },
   {
-    "task": "members:by-id:cards:get",
+    "task": "api:members:by-id:cards:get",
     "path": "/1/members/{id}/cards",
     "summary": "Get Cards the Member is on",
     "parameters": [
@@ -2492,7 +2492,7 @@
     ]
   },
   {
-    "task": "members:by-id:customBoardBackgrounds:by-idBackground:get",
+    "task": "api:members:by-id:customBoardBackgrounds:by-idBackground:get",
     "path": "/1/members/{id}/customBoardBackgrounds/{idBackground}",
     "summary": "Get custom Board Background of Member",
     "parameters": [
@@ -2512,7 +2512,7 @@
     ]
   },
   {
-    "task": "members:by-id:customBoardBackgrounds:get",
+    "task": "api:members:by-id:customBoardBackgrounds:get",
     "path": "/1/members/{id}/customBoardBackgrounds",
     "summary": "Get a Member's custom Board Backgrounds",
     "parameters": [
@@ -2526,7 +2526,7 @@
     ]
   },
   {
-    "task": "members:by-id:customEmoji:by-idEmoji:get",
+    "task": "api:members:by-id:customEmoji:by-idEmoji:get",
     "path": "/1/members/{id}/customEmoji/{idEmoji}",
     "summary": "Get a Member's custom Emoji",
     "parameters": [
@@ -2554,7 +2554,7 @@
     ]
   },
   {
-    "task": "members:by-id:customEmoji:get",
+    "task": "api:members:by-id:customEmoji:get",
     "path": "/1/members/{id}/customEmoji",
     "summary": "Get a Member's customEmojis",
     "parameters": [
@@ -2568,7 +2568,7 @@
     ]
   },
   {
-    "task": "members:by-id:customStickers:by-idSticker:get",
+    "task": "api:members:by-id:customStickers:by-idSticker:get",
     "path": "/1/members/{id}/customStickers/{idSticker}",
     "summary": "Get a Member's custom Sticker",
     "parameters": [
@@ -2596,7 +2596,7 @@
     ]
   },
   {
-    "task": "members:by-id:customStickers:get",
+    "task": "api:members:by-id:customStickers:get",
     "path": "/1/members/{id}/customStickers",
     "summary": "Get Member's custom Stickers",
     "parameters": [
@@ -2610,7 +2610,7 @@
     ]
   },
   {
-    "task": "members:by-id:get",
+    "task": "api:members:by-id:get",
     "path": "/1/members/{id}",
     "summary": "Get a Member",
     "parameters": [
@@ -2763,7 +2763,7 @@
     ]
   },
   {
-    "task": "members:by-id:notificationChannelSettings:by-channel:get",
+    "task": "api:members:by-id:notificationChannelSettings:by-channel:get",
     "path": "/1/members/{id}/notificationChannelSettings/{channel}",
     "summary": "Get blocked notification keys of Member on this channel",
     "parameters": [
@@ -2783,7 +2783,7 @@
     ]
   },
   {
-    "task": "members:by-id:notificationChannelSettings:get",
+    "task": "api:members:by-id:notificationChannelSettings:get",
     "path": "/1/members/{id}/notificationChannelSettings",
     "summary": "Get a Member's notification channel settings",
     "parameters": [
@@ -2796,7 +2796,7 @@
     ]
   },
   {
-    "task": "members:by-id:notifications:get",
+    "task": "api:members:by-id:notifications:get",
     "path": "/1/members/{id}/notifications",
     "summary": "Get Member's Notifications",
     "parameters": [
@@ -2887,7 +2887,7 @@
     ]
   },
   {
-    "task": "members:by-id:organizations:get",
+    "task": "api:members:by-id:organizations:get",
     "path": "/1/members/{id}/organizations",
     "summary": "Get Member's Organizations",
     "parameters": [
@@ -2922,7 +2922,7 @@
     ]
   },
   {
-    "task": "members:by-id:organizationsInvited:get",
+    "task": "api:members:by-id:organizationsInvited:get",
     "path": "/1/members/{id}/organizationsInvited",
     "summary": "Get Organizations a Member has been invited to",
     "parameters": [
@@ -2943,7 +2943,7 @@
     ]
   },
   {
-    "task": "members:by-id:savedSearches:by-idSearch:get",
+    "task": "api:members:by-id:savedSearches:by-idSearch:get",
     "path": "/1/members/{id}/savedSearches/{idSearch}",
     "summary": "Get a saved search",
     "parameters": [
@@ -2964,7 +2964,7 @@
     ]
   },
   {
-    "task": "members:by-id:savedSearches:get",
+    "task": "api:members:by-id:savedSearches:get",
     "path": "/1/members/{id}/savedSearches",
     "summary": "Get Member's saved searched",
     "parameters": [
@@ -2978,7 +2978,7 @@
     ]
   },
   {
-    "task": "members:by-id:tokens:get",
+    "task": "api:members:by-id:tokens:get",
     "path": "/1/members/{id}/tokens",
     "summary": "Get Member's Tokens",
     "parameters": [
@@ -2999,7 +2999,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:board:get",
+    "task": "api:notifications:by-id:board:get",
     "path": "/1/notifications/{id}/board",
     "summary": "Get the Board a Notification is on",
     "parameters": [
@@ -3020,7 +3020,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:by-field:get",
+    "task": "api:notifications:by-id:by-field:get",
     "path": "/1/notifications/{id}/{field}",
     "summary": "Get a field of a Notification",
     "parameters": [
@@ -3041,7 +3041,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:card:get",
+    "task": "api:notifications:by-id:card:get",
     "path": "/1/notifications/{id}/card",
     "summary": "Get the Card a Notification is on",
     "parameters": [
@@ -3062,7 +3062,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:get",
+    "task": "api:notifications:by-id:get",
     "path": "/1/notifications/{id}",
     "summary": "Get a Notification",
     "parameters": [
@@ -3174,7 +3174,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:list:get",
+    "task": "api:notifications:by-id:list:get",
     "path": "/1/notifications/{id}/list",
     "summary": "Get the List a Notification is on",
     "parameters": [
@@ -3195,7 +3195,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:member:get",
+    "task": "api:notifications:by-id:member:get",
     "path": "/1/notifications/{id}/member",
     "summary": "Get the Member a Notification is about (not the creator)",
     "parameters": [
@@ -3216,7 +3216,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:memberCreator:get",
+    "task": "api:notifications:by-id:memberCreator:get",
     "path": "/1/notifications/{id}/memberCreator",
     "summary": "Get the Member who created the Notification",
     "parameters": [
@@ -3237,7 +3237,7 @@
     ]
   },
   {
-    "task": "notifications:by-id:organization:get",
+    "task": "api:notifications:by-id:organization:get",
     "path": "/1/notifications/{id}/organization",
     "summary": "Get a Notification's associated Organization",
     "parameters": [
@@ -3258,7 +3258,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:actions:get",
+    "task": "api:organizations:by-id:actions:get",
     "path": "/1/organizations/{id}/actions",
     "summary": "Get Actions for Organization",
     "parameters": [
@@ -3272,7 +3272,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:boards:get",
+    "task": "api:organizations:by-id:boards:get",
     "path": "/1/organizations/{id}/boards",
     "summary": "Get Boards in an Organization",
     "parameters": [
@@ -3300,7 +3300,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:by-field:get",
+    "task": "api:organizations:by-id:by-field:get",
     "path": "/1/organizations/{id}/{field}",
     "summary": "Get field on Organization",
     "parameters": [
@@ -3321,7 +3321,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:exports:get",
+    "task": "api:organizations:by-id:exports:get",
     "path": "/1/organizations/{id}/exports",
     "summary": "Retrieve Organization's Exports",
     "parameters": [
@@ -3335,7 +3335,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:get",
+    "task": "api:organizations:by-id:get",
     "path": "/1/organizations/{id}",
     "summary": "Get an Organization",
     "parameters": [
@@ -3349,7 +3349,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:members:get",
+    "task": "api:organizations:by-id:members:get",
     "path": "/1/organizations/{id}/members",
     "summary": "Get the Members of an Organization",
     "parameters": [
@@ -3363,7 +3363,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:memberships:by-idMembership:get",
+    "task": "api:organizations:by-id:memberships:by-idMembership:get",
     "path": "/1/organizations/{id}/memberships/{idMembership}",
     "summary": "Get a Membership of an Organization",
     "parameters": [
@@ -3391,7 +3391,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:memberships:get",
+    "task": "api:organizations:by-id:memberships:get",
     "path": "/1/organizations/{id}/memberships",
     "summary": "Get Memberships of an Organization",
     "parameters": [
@@ -3419,7 +3419,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:newBillableGuests:by-idBoard:get",
+    "task": "api:organizations:by-id:newBillableGuests:by-idBoard:get",
     "path": "/1/organizations/{id}/newBillableGuests/{idBoard}",
     "summary": "Get Organizations new billable guests",
     "parameters": [
@@ -3440,7 +3440,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:pluginData:get",
+    "task": "api:organizations:by-id:pluginData:get",
     "path": "/1/organizations/{id}/pluginData",
     "summary": "Get the pluginData Scoped to Organization",
     "parameters": [
@@ -3454,7 +3454,7 @@
     ]
   },
   {
-    "task": "organizations:by-id:tags:get",
+    "task": "api:organizations:by-id:tags:get",
     "path": "/1/organizations/{id}/tags",
     "summary": "Get Tags of an Organization",
     "parameters": [
@@ -3467,7 +3467,7 @@
     ]
   },
   {
-    "task": "plugins:by-id:compliance:memberPrivacy:get",
+    "task": "api:plugins:by-id:compliance:memberPrivacy:get",
     "path": "/1/plugins/{id}/compliance/memberPrivacy",
     "summary": "Get Plugin's Member privacy compliance",
     "parameters": [
@@ -3481,7 +3481,7 @@
     ]
   },
   {
-    "task": "plugins:by-id:get",
+    "task": "api:plugins:by-id:get",
     "path": "/1/plugins/{id}/",
     "summary": "Get a Plugin",
     "parameters": [
@@ -3495,7 +3495,7 @@
     ]
   },
   {
-    "task": "search:get",
+    "task": "api:search:get",
     "path": "/1/search",
     "summary": "Search Trello",
     "parameters": [
@@ -3648,7 +3648,7 @@
     ]
   },
   {
-    "task": "search:members:get",
+    "task": "api:search:members:get",
     "path": "/1/search/members/",
     "summary": "Search for Members",
     "parameters": [
@@ -3690,7 +3690,7 @@
     ]
   },
   {
-    "task": "tokens:by-token:get",
+    "task": "api:tokens:by-token:get",
     "path": "/1/tokens/{token}",
     "summary": "Get a Token",
     "parameters": [
@@ -3718,7 +3718,7 @@
     ]
   },
   {
-    "task": "tokens:by-token:member:get",
+    "task": "api:tokens:by-token:member:get",
     "path": "/1/tokens/{token}/member",
     "summary": "Get Token's Member",
     "parameters": [
@@ -3739,7 +3739,7 @@
     ]
   },
   {
-    "task": "tokens:by-token:webhooks:by-idWebhook:get",
+    "task": "api:tokens:by-token:webhooks:by-idWebhook:get",
     "path": "/1/tokens/{token}/webhooks/{idWebhook}",
     "summary": "Get a Webhook belonging to a Token",
     "parameters": [
@@ -3760,7 +3760,7 @@
     ]
   },
   {
-    "task": "tokens:by-token:webhooks:get",
+    "task": "api:tokens:by-token:webhooks:get",
     "path": "/1/tokens/{token}/webhooks",
     "summary": "Get Webhooks for Token",
     "parameters": [
@@ -3774,7 +3774,7 @@
     ]
   },
   {
-    "task": "webhooks:by-id:by-field:get",
+    "task": "api:webhooks:by-id:by-field:get",
     "path": "/1/webhooks/{id}/{field}",
     "summary": "Get a field on a Webhook",
     "parameters": [
@@ -3795,7 +3795,7 @@
     ]
   },
   {
-    "task": "webhooks:by-id:get",
+    "task": "api:webhooks:by-id:get",
     "path": "/1/webhooks/{id}",
     "summary": "Get a Webhook",
     "parameters": [

@@ -82,12 +82,15 @@ describe("every documented GET endpoint", () => {
 });
 
 test("help runs as a real executable task without credentials", async () => {
-  const child = Bun.spawn(["bun", "mise-tasks/actions/by-id/get", "--help"], {
-    cwd: root,
-    env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
-    stdout: "pipe",
-    stderr: "pipe",
-  });
+  const child = Bun.spawn(
+    ["bun", "mise-tasks/api/actions/by-id/get", "--help"],
+    {
+      cwd: root,
+      env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
+      stdout: "pipe",
+      stderr: "pipe",
+    },
+  );
   const text = await new Response(child.stdout).text();
   expect(await child.exited).toBe(0);
   expect(text).toContain("GET /1/actions/{id}");
@@ -95,7 +98,7 @@ test("help runs as a real executable task without credentials", async () => {
 });
 
 test("missing arguments fail before credentials are required", async () => {
-  const child = Bun.spawn(["bun", "mise-tasks/actions/by-id/get"], {
+  const child = Bun.spawn(["bun", "mise-tasks/api/actions/by-id/get"], {
     cwd: root,
     env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
     stdout: "pipe",

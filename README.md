@@ -26,15 +26,16 @@ this CLI does not grant them or change your token's scope.
 ```sh
 mise tasks ls --local
 mise run boards:list
-mise run members:by-id:boards:get -- --id me --fields name,url
-mise run boards:by-id:lists:get -- --id BOARD_ID
-mise run boards:by-id:cards:get -- --id BOARD_ID
-mise run boards:by-boardId:actions:get -- --boardId BOARD_ID --limit 10
-mise run actions:by-id:get -- --id ACTION_ID --help
-mise run search:get -- --query 'login bug' --cards_limit 10
+mise run api:members:by-id:boards:get -- --id me --fields name,url
+mise run api:boards:by-id:lists:get -- --id BOARD_ID
+mise run api:boards:by-id:cards:get -- --id BOARD_ID
+mise run api:boards:by-boardId:actions:get -- --boardId BOARD_ID --limit 10
+mise run api:actions:by-id:get -- --help
+mise run api:search:get -- --query 'login bug' --cards_limit 10
 ```
 
-The directory tree follows the API path literally: `{id}` becomes `by-id`, and
+Generated tasks live under `api:*`, leaving top-level domains for workflow
+commands. Beneath that namespace, the tree follows the API path literally: `{id}` becomes `by-id`, and
 `get` marks the HTTP method. Placeholder names retain Trello's spelling, so
 `--id`, `--boardId`, and `--idAction` are distinct. See the complete
 [inventory](docs/endpoints.md) or pass `--help` to an endpoint task. Help requires
@@ -48,7 +49,7 @@ Enums and most semantic constraints are validated by the API, not this CLI.
 Some reference entries omit supported query parameters. Pass these deliberately:
 
 ```sh
-mise run cards:by-id:actions:get -- --id CARD_ID --param limit=10 --param before=ACTION_ID
+mise run api:cards:by-id:actions:get -- --id CARD_ID --param limit=10 --param before=ACTION_ID
 ```
 
 `--param NAME=VALUE` is repeatable for distinct query names. It cannot override
@@ -70,7 +71,7 @@ Export downloads stream binary bytes to stdout. Redirects are only followed for
 that download endpoint, over HTTPS, with API key/token query parameters removed:
 
 ```sh
-mise run boards:by-id:exports:by-idExport:download:get -- --id BOARD_ID --idExport EXPORT_ID > export.zip
+mise run api:boards:by-id:exports:by-idExport:download:get -- --id BOARD_ID --idExport EXPORT_ID > export.zip
 ```
 
 An export must already exist; this tool cannot create one. A failed stream can
