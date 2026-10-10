@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:members:by-id:customStickers:by-idSticker:get",
+  "method": "GET",
   "path": "/1/members/{id}/customStickers/{idSticker}",
   "summary": "Get a Member's custom Sticker",
   "parameters": [

@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:notifications:by-id:card:get",
+  "method": "GET",
   "path": "/1/notifications/{id}/card",
   "summary": "Get the Card a Notification is on",
   "parameters": [

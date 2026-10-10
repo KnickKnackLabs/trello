@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:search:members:get",
+  "method": "GET",
   "path": "/1/search/members/",
   "summary": "Search for Members",
   "parameters": [

@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:boards:by-id:lists:by-filter:get",
+  "method": "GET",
   "path": "/1/boards/{id}/lists/{filter}",
   "summary": "Get filtered Lists on a Board",
   "parameters": [

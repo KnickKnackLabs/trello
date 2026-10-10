@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:members:by-id:notificationChannelSettings:by-channel:get",
+  "method": "GET",
   "path": "/1/members/{id}/notificationChannelSettings/{channel}",
   "summary": "Get blocked notification keys of Member on this channel",
   "parameters": [

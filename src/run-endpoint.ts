@@ -1,56 +1,28 @@
 import {
-  createReadClient,
+  createApiClient,
   environmentCredentials,
-  type ReadClient,
+  type ApiClient,
 } from "./api.ts";
-import { endpointHelp, endpointPath } from "./arguments.ts";
+import { endpointHelp } from "./arguments.ts";
 import type { Endpoint } from "./endpoint.ts";
+import {
+  prepareRequest,
+  localPayloadFiles,
+  type PayloadFiles,
+} from "./prepare-request.ts";
+import { writeResponse, type Output } from "./write-response.ts";
 
-export type Output = {
-  write: (text: string | Uint8Array) => Promise<void>;
-};
-
-/** One request, one page, explicit output: no implicit traversal of the account. */
+/** Exactly one operation: no implicit traversal, retries, or follow-up writes. */
 export async function executeEndpoint(
   endpoint: Endpoint,
   args: string[],
-  client: ReadClient,
+  client: ApiClient,
   output: Output,
+  files: PayloadFiles = localPayloadFiles,
 ): Promise<void> {
-  const path = endpointPath(endpoint, args);
-  const response = await client.get(path, { download: endpoint.download });
-  if (response.status === 204) return;
-
-  if (endpoint.download) {
-    // Preserve export bytes rather than attempting to parse them as JSON.
-    if (!response.body) return;
-    try {
-      for await (const chunk of response.body) await output.write(chunk);
-    } catch {
-      throw new Error("Download stream failed; output may be incomplete");
-    }
-    return;
-  }
-
-  const contentType = response.headers.get("content-type") ?? "";
-  if (contentType.includes("json")) {
-    let data: unknown;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error("Trello API returned invalid JSON");
-    }
-    await output.write(JSON.stringify(data, null, 2) + "\n");
-  } else {
-    // Field endpoints may return plain text; do not coerce valid text into JSON.
-    let text: string;
-    try {
-      text = await response.text();
-    } catch {
-      throw new Error("Trello response stream failed");
-    }
-    await output.write(text);
-  }
+  const request = await prepareRequest(endpoint, args, files);
+  const response = await client.request(request);
+  await writeResponse(endpoint, response, output);
 }
 
 export async function runEndpoint(endpoint: Endpoint): Promise<void> {
@@ -59,12 +31,12 @@ export async function runEndpoint(endpoint: Endpoint): Promise<void> {
     console.log(endpointHelp(endpoint));
     return;
   }
-
   try {
-    // Validate arguments before asking for credentials or making a request.
-    endpointPath(endpoint, args);
-    const client = createReadClient(environmentCredentials());
-    await executeEndpoint(endpoint, args, client, {
+    // Load and validate inputs before credentials or network access.
+    const request = await prepareRequest(endpoint, args);
+    const client = createApiClient(environmentCredentials());
+    const response = await client.request(request);
+    await writeResponse(endpoint, response, {
       write: async (data) => {
         await Bun.write(Bun.stdout, data);
       },

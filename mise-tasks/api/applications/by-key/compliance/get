@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:applications:by-key:compliance:get",
+  "method": "GET",
   "path": "/1/applications/{key}/compliance",
   "summary": "Get Application's compliance data",
   "parameters": [

@@ -3,7 +3,8 @@ import { endpointHelp, endpointPath } from "../src/arguments.ts";
 import type { Endpoint } from "../src/endpoint.ts";
 
 const endpoint: Endpoint = {
-  task: "cards:by-id:get",
+  task: "api:cards:by-id:get",
+  method: "GET",
   path: "/1/cards/{id}",
   summary: "Get a card",
   parameters: [
@@ -100,7 +101,8 @@ describe("endpoint arguments", () => {
 
   test("required query parameters can use either spelling", () => {
     const search: Endpoint = {
-      task: "search:get",
+      task: "api:search:get",
+      method: "GET",
       path: "/1/search",
       summary: "Search",
       parameters: [{ name: "query", location: "query", required: true }],
@@ -114,6 +116,6 @@ describe("endpoint arguments", () => {
   test("help explains required parameters and pagination", () => {
     const help = endpointHelp(endpoint);
     expect(help).toContain("--id VALUE (path, required)");
-    expect(help).toContain("One API page");
+    expect(help).toContain("one API page");
   });
 });

@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:boards:by-id:boardPlugins:get",
+  "method": "GET",
   "path": "/1/boards/{id}/boardPlugins",
   "summary": "Get Enabled Power-Ups on Board",
   "parameters": [

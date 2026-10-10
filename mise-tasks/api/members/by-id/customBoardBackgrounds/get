@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:members:by-id:customBoardBackgrounds:get",
+  "method": "GET",
   "path": "/1/members/{id}/customBoardBackgrounds",
   "summary": "Get a Member's custom Board Backgrounds",
   "parameters": [

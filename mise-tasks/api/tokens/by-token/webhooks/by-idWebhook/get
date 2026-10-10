@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:tokens:by-token:webhooks:by-idWebhook:get",
+  "method": "GET",
   "path": "/1/tokens/{token}/webhooks/{idWebhook}",
   "summary": "Get a Webhook belonging to a Token",
   "parameters": [

@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:checklists:by-id:board:get",
+  "method": "GET",
   "path": "/1/checklists/{id}/board",
   "summary": "Get the Board the Checklist is on",
   "parameters": [

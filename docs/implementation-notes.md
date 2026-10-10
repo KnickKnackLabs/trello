@@ -1,4 +1,9 @@
-# Implementation notes — 2026-10-09
+# Initial read-only implementation notes — 2026-10-09
+
+This records the initial read-only implementation. Subsequent changes moved the
+literal tasks under `api:*` and added writes; see [write implementation notes](write-implementation-notes.md).
+The original live-read results below remain useful evidence, not a current claim
+that the tool is read-only.
 
 ## Scope and design
 

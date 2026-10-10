@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:enterprises:by-id:organizations:bulk:by-idOrganizations:get",
+  "method": "GET",
   "path": "/1/enterprises/{id}/organizations/bulk/{idOrganizations}",
   "summary": "Bulk accept a set of organizations to an Enterprise.",
   "parameters": [

@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:actions:by-idAction:reactionsSummary:get",
+  "method": "GET",
   "path": "/1/actions/{idAction}/reactionsSummary",
   "summary": "List Action's summary of Reactions",
   "parameters": [

@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:enterprises:by-id:transferrable:organization:by-idOrganization:get",
+  "method": "GET",
   "path": "/1/enterprises/{id}/transferrable/organization/{idOrganization}",
   "summary": "Get whether an organization can be transferred to an enterprise.",
   "parameters": [

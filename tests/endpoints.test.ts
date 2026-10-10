@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { access, constants } from "node:fs/promises";
 import { resolve } from "node:path";
 import spec from "../spec/trello.openapi.json";
-import catalog from "../spec/read-endpoints.json";
+import catalog from "../spec/endpoints.json";
 import { endpointPath } from "../src/arguments.ts";
 import type { Endpoint } from "../src/endpoint.ts";
 import { executeEndpoint } from "../src/run-endpoint.ts";
@@ -10,29 +10,66 @@ import { executeEndpoint } from "../src/run-endpoint.ts";
 const endpoints = catalog as Endpoint[];
 const root = resolve(import.meta.dir, "..");
 const actionEndpoint = endpoints.find(
-  (endpoint) => endpoint.path === "/1/actions/{id}",
+  (endpoint) =>
+    endpoint.method === "GET" && endpoint.path === "/1/actions/{id}",
 )!;
+const noFiles = {
+  readText: async () => {
+    throw new Error("No body file expected");
+  },
+  readUpload: async () => new File(["test bytes"], "fixture.txt"),
+};
 
-test("catalog includes exactly every GET path in the pinned API reference", () => {
-  const getPaths = Object.entries(spec.paths)
-    .filter(([, item]) => "get" in item)
-    .map(([path]) => `/1${path}`)
+function requiredArgs(endpoint: Endpoint): string[] {
+  const args = endpoint.parameters
+    .filter((parameter) => parameter.required)
+    .flatMap((parameter) => {
+      const value =
+        parameter.type === "boolean"
+          ? "true"
+          : ["number", "integer"].includes(parameter.type ?? "")
+            ? "1"
+            : `value-${parameter.name}`;
+      return [`--${parameter.name}`, value];
+    });
+  if (endpoint.jsonBody?.required || endpoint.jsonBody?.requiredFields.length) {
+    const body = Object.fromEntries(
+      endpoint.jsonBody.requiredFields.map((name) => [name, `value-${name}`]),
+    );
+    args.push("--body-json", JSON.stringify(body));
+  }
+  return args;
+}
+
+test("catalog includes exactly every HTTP operation in the pinned reference", () => {
+  const operations = Object.entries(spec.paths)
+    .flatMap(([path, item]) =>
+      ["get", "post", "put", "delete", "patch"]
+        .filter((method) => method in item)
+        .map((method) => `${method.toUpperCase()} /1${path}`),
+    )
     .sort();
-  expect(endpoints.map((endpoint) => endpoint.path).sort()).toEqual(getPaths);
+  expect(
+    endpoints.map((endpoint) => `${endpoint.method} ${endpoint.path}`).sort(),
+  ).toEqual(operations);
   expect(new Set(endpoints.map((endpoint) => endpoint.task)).size).toBe(
     endpoints.length,
   );
+  expect(
+    endpoints.filter((endpoint) => endpoint.method === "GET"),
+  ).toHaveLength(128);
+  expect(endpoints).toHaveLength(261);
 });
 
-describe("every documented GET endpoint", () => {
+describe("every documented endpoint", () => {
   for (const endpoint of endpoints) {
-    test(`${endpoint.task}: executable task and one correctly substituted request`, async () => {
+    test(`${endpoint.task}: real entry point and one correctly prepared operation`, async () => {
       const taskPath = `${root}/mise-tasks/${endpoint.task.replaceAll(":", "/")}`;
       await access(taskPath, constants.X_OK);
-      const source = await Bun.file(taskPath).text();
-      expect(source).toContain(JSON.stringify(endpoint, null, 2));
-      // Extensionless mise task files are not included by TypeScript's compiler.
-      // Exercise each real entry point through Bun as well as its metadata.
+      expect(await Bun.file(taskPath).text()).toContain(
+        JSON.stringify(endpoint, null, 2),
+      );
+      // TypeScript ignores extensionless files, so run every task through Bun too.
       const helpProcess = Bun.spawn(["bun", taskPath, "--help"], {
         cwd: root,
         env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
@@ -41,19 +78,10 @@ describe("every documented GET endpoint", () => {
       });
       const help = await new Response(helpProcess.stdout).text();
       expect(await helpProcess.exited).toBe(0);
-      expect(help).toContain(`GET ${endpoint.path}`);
+      expect(help).toContain(`${endpoint.method} ${endpoint.path}`);
+      if (endpoint.method !== "GET") expect(help).toContain("WARNING");
 
-      const args = endpoint.parameters
-        .filter((parameter) => parameter.required)
-        .flatMap((parameter) => {
-          const value =
-            parameter.type === "boolean"
-              ? "true"
-              : ["number", "integer"].includes(parameter.type ?? "")
-                ? "1"
-                : `value-${parameter.name}`;
-          return [`--${parameter.name}`, value];
-        });
+      const args = requiredArgs(endpoint);
       const expectedPath = endpointPath(endpoint, args);
       expect(expectedPath).not.toMatch(/[{}]/);
       let requests = 0;
@@ -62,9 +90,19 @@ describe("every documented GET endpoint", () => {
         endpoint,
         args,
         {
-          get: async (path) => {
+          request: async (request) => {
             requests++;
-            expect(path).toBe(expectedPath);
+            expect(request.path).toBe(expectedPath);
+            expect(request.method).toBe(endpoint.method);
+            if (
+              endpoint.parameters.some(
+                (parameter) =>
+                  parameter.location === "file" && parameter.required,
+              )
+            ) {
+              expect(request.body).toBeInstanceOf(FormData);
+            }
+            if (endpoint.jsonBody?.required) expect(request.body).toBeString();
             return Response.json({ ok: true });
           },
         },
@@ -74,6 +112,7 @@ describe("every documented GET endpoint", () => {
               typeof data === "string" ? data : new TextDecoder().decode(data);
           },
         },
+        noFiles,
       );
       expect(requests).toBe(1);
       expect(JSON.parse(printed)).toEqual({ ok: true });
@@ -81,24 +120,8 @@ describe("every documented GET endpoint", () => {
   }
 });
 
-test("help runs as a real executable task without credentials", async () => {
-  const child = Bun.spawn(
-    ["bun", "mise-tasks/api/actions/by-id/get", "--help"],
-    {
-      cwd: root,
-      env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
-      stdout: "pipe",
-      stderr: "pipe",
-    },
-  );
-  const text = await new Response(child.stdout).text();
-  expect(await child.exited).toBe(0);
-  expect(text).toContain("GET /1/actions/{id}");
-  expect(text).toContain("--id VALUE");
-});
-
-test("missing arguments fail before credentials are required", async () => {
-  const child = Bun.spawn(["bun", "mise-tasks/api/actions/by-id/get"], {
+test("invalid write arguments fail without credentials or network access", async () => {
+  const child = Bun.spawn(["bun", "mise-tasks/api/cards/post"], {
     cwd: root,
     env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
     stdout: "pipe",
@@ -106,10 +129,10 @@ test("missing arguments fail before credentials are required", async () => {
   });
   const error = await new Response(child.stderr).text();
   expect(await child.exited).toBe(1);
-  expect(error).toContain("Missing required --id");
+  expect(error).toContain("Missing required --idList");
 });
 
-test("boards:list alias exposes member-board query options without credentials", async () => {
+test("boards:list alias keeps read behavior and member-board query options", async () => {
   const child = Bun.spawn(["bun", "mise-tasks/boards/list", "--help"], {
     cwd: root,
     env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
@@ -128,11 +151,30 @@ test("no-content response emits no output", async () => {
     actionEndpoint,
     ["--id", "x"],
     {
-      get: async () => new Response(null, { status: 204 }),
+      request: async () => new Response(null, { status: 204 }),
     },
     {
       write: async () => {
         throw new Error("Should not print an empty response");
+      },
+    },
+  );
+});
+
+test("empty JSON response after a write emits no output", async () => {
+  const endpoint = endpoints.find(
+    (item) => item.task === "api:cards:by-id:delete",
+  )!;
+  await executeEndpoint(
+    endpoint,
+    ["--id", "x"],
+    {
+      request: async () =>
+        new Response("", { headers: { "content-type": "application/json" } }),
+    },
+    {
+      write: async () => {
+        throw new Error("Should not print empty JSON");
       },
     },
   );
@@ -150,7 +192,7 @@ test("failed download streams cannot leak transport errors", async () => {
       endpoint,
       ["--id", "x", "--idExport", "y"],
       {
-        get: async () => new Response(body),
+        request: async () => new Response(body),
       },
       { write: async () => {} },
     ),
@@ -163,7 +205,7 @@ test("plain text field output is preserved", async () => {
     actionEndpoint,
     ["--id", "x"],
     {
-      get: async () => new Response("a field value"),
+      request: async () => new Response("a field value"),
     },
     {
       write: async (data) => {
@@ -180,7 +222,7 @@ test("invalid JSON gives a safe diagnostic", async () => {
       actionEndpoint,
       ["--id", "x"],
       {
-        get: async () =>
+        request: async () =>
           new Response("not JSON", {
             headers: { "content-type": "application/json" },
           }),
@@ -197,7 +239,7 @@ test("download output preserves binary bytes", async () => {
     endpoint,
     ["--id", "board", "--idExport", "export"],
     {
-      get: async () => new Response(new Uint8Array([0, 255, 10, 128])),
+      request: async () => new Response(new Uint8Array([0, 255, 10, 128])),
     },
     {
       write: async (data) => {

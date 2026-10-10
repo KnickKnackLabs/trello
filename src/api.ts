@@ -1,3 +1,14 @@
+import type { HttpMethod } from "./endpoint.ts";
+
+export type ApiRequest = {
+  method: HttpMethod;
+  path: string;
+  body?: BodyInit;
+  headers?: HeadersInit;
+  download?: boolean;
+};
+export type ApiClient = { request: (request: ApiRequest) => Promise<Response> };
+
 export type Credentials = { key: string; token: string };
 export type Fetch = (url: URL, options: RequestInit) => Promise<Response>;
 export type ReadClient = {
@@ -15,28 +26,43 @@ export function environmentCredentials(): Credentials {
   return { key, token };
 }
 
-/** The injected transport and GET-only interface keep endpoint tasks read-only. */
-export function createReadClient(
+/** No retries: replaying a mutation can duplicate actions or destroy newer state. */
+export function createApiClient(
   credentials: Credentials,
   fetchFn: Fetch = fetch,
-): ReadClient {
-  async function send(url: URL): Promise<Response> {
+): ApiClient {
+  async function send(url: URL, request: ApiRequest): Promise<Response> {
     try {
       return await fetchFn(url, {
-        method: "GET",
+        method: request.method,
+        body: request.body,
+        headers: request.headers,
         redirect: "manual",
         signal: AbortSignal.timeout(30_000),
       });
     } catch {
       // Transport exceptions may include the authenticated URL.
-      throw new Error("Trello request failed: network error or timeout");
+      const uncertainty =
+        request.method === "GET"
+          ? ""
+          : "; write outcome unknown—check state before retrying";
+      throw new Error(
+        `Trello request failed: network error or timeout${uncertainty}`,
+      );
     }
   }
 
-  async function get(
-    path: string,
-    options: { download?: boolean } = {},
-  ): Promise<Response> {
+  async function execute(request: ApiRequest): Promise<Response> {
+    const { path } = request;
+    if (!["GET", "POST", "PUT", "DELETE", "PATCH"].includes(request.method)) {
+      throw new Error("Unsupported HTTP method");
+    }
+    if (request.method === "GET" && request.body !== undefined) {
+      throw new Error("GET requests cannot have a body");
+    }
+    if (request.download && request.method !== "GET") {
+      throw new Error("Only GET requests can download through redirects");
+    }
     let url: URL;
     try {
       url = new URL(path, "https://api.trello.com");
@@ -54,11 +80,11 @@ export function createReadClient(
     url.searchParams.set("key", credentials.key);
     url.searchParams.set("token", credentials.token);
 
-    let response = await send(url);
+    let response = await send(url, request);
     let previousUrl = url;
     let redirects = 0;
     while ([301, 302, 303, 307, 308].includes(response.status)) {
-      if (!options.download) {
+      if (!request.download) {
         throw new Error(
           `Trello API returned HTTP ${response.status}; redirects are only supported for downloads`,
         );
@@ -87,7 +113,7 @@ export function createReadClient(
       } catch {
         throw new Error("Download redirect response stream failed");
       }
-      response = await send(target);
+      response = await send(target, { method: "GET", path: target.pathname });
       previousUrl = target;
     }
 
@@ -97,7 +123,18 @@ export function createReadClient(
     return response;
   }
 
-  return { get };
+  return { request: execute };
+}
+
+/** A narrow read capability for hand-written commands that must not mutate. */
+export function createReadClient(
+  credentials: Credentials,
+  fetchFn: Fetch = fetch,
+): ReadClient {
+  const client = createApiClient(credentials, fetchFn);
+  return {
+    get: (path, options) => client.request({ ...options, method: "GET", path }),
+  };
 }
 
 /** Compatibility helper for small hand-written JSON tasks. No runtime schema validation. */

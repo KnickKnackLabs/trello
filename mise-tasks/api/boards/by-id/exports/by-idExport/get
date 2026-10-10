@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:boards:by-id:exports:by-idExport:get",
+  "method": "GET",
   "path": "/1/boards/{id}/exports/{idExport}",
   "summary": "Get an Export for a Board",
   "parameters": [

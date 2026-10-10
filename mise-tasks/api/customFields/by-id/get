@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:customFields:by-id:get",
+  "method": "GET",
   "path": "/1/customFields/{id}",
   "summary": "Get a Custom Field",
   "parameters": [

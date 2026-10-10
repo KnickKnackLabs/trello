@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:enterprises:by-id:transferrable:bulk:by-idOrganizations:get",
+  "method": "GET",
   "path": "/1/enterprises/{id}/transferrable/bulk/{idOrganizations}",
   "summary": "Get a bulk list of organizations that can be transferred to an enterprise.",
   "parameters": [

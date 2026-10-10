@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:webhooks:by-id:by-field:get",
+  "method": "GET",
   "path": "/1/webhooks/{id}/{field}",
   "summary": "Get a field on a Webhook",
   "parameters": [

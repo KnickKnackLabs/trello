@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:labels:by-id:get",
+  "method": "GET",
   "path": "/1/labels/{id}",
   "summary": "Get a Label",
   "parameters": [

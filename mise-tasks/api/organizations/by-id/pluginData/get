@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:organizations:by-id:pluginData:get",
+  "method": "GET",
   "path": "/1/organizations/{id}/pluginData",
   "summary": "Get the pluginData Scoped to Organization",
   "parameters": [

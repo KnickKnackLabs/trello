@@ -1,9 +1,15 @@
 import { mkdir, writeFile, chmod, readFile, stat } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
-import type { Endpoint, Parameter } from "../src/endpoint.ts";
+import type { Endpoint, Parameter, HttpMethod } from "../src/endpoint.ts";
 
 const root = resolve(import.meta.dir, "..");
-type Schema = { $ref?: string; type?: string };
+type Schema = {
+  $ref?: string;
+  type?: string;
+  format?: string;
+  properties?: Record<string, Schema>;
+  required?: string[];
+};
 type ApiParameter = {
   $ref?: string;
   name: string;
@@ -12,8 +18,17 @@ type ApiParameter = {
   description?: string;
   schema?: Schema;
 };
-type Operation = { summary?: string; parameters?: ApiParameter[] };
-type PathItem = { get?: Operation; parameters?: ApiParameter[] };
+type Operation = {
+  summary?: string;
+  parameters?: ApiParameter[];
+  requestBody?: {
+    required?: boolean;
+    content?: Record<string, { schema?: Schema }>;
+  };
+};
+type PathItem = Partial<Record<Lowercase<HttpMethod>, Operation>> & {
+  parameters?: ApiParameter[];
+};
 type OpenApi = { paths: Record<string, PathItem> };
 
 const spec: OpenApi = await Bun.file(`${root}/spec/trello.openapi.json`).json();
@@ -34,57 +49,84 @@ function dereference<T extends { $ref?: string }>(value: T): T {
 }
 
 for (const [path, item] of Object.entries(spec.paths)) {
-  if (!item.get) continue;
+  for (const method of ["get", "post", "put", "delete", "patch"] as const) {
+    const operation = item[method];
+    if (!operation) continue;
 
-  // Keeping placeholders in the command tree avoids collisions between e.g.
-  // /cards/{id}/attachments and /cards/{id}/attachments/{idAttachment}.
-  const segments = path
-    .split("/")
-    .filter(Boolean)
-    .map((segment) => {
-      const placeholder = segment.match(/^\{(.+)\}$/);
-      return placeholder ? `by-${placeholder[1]}` : segment;
-    });
-  const task = ["api", ...segments, "get"].join(":");
-  const parameters = new Map<string, Parameter>();
+    // Keeping placeholders in the command tree avoids collisions between e.g.
+    // /cards/{id}/attachments and /cards/{id}/attachments/{idAttachment}.
+    const segments = path
+      .split("/")
+      .filter(Boolean)
+      .map((segment) => {
+        const placeholder = segment.match(/^\{(.+)\}$/);
+        return placeholder ? `by-${placeholder[1]}` : segment;
+      });
+    const task = ["api", ...segments, method].join(":");
+    const parameters = new Map<string, Parameter>();
 
-  for (const raw of [
-    ...(item.parameters ?? []),
-    ...(item.get.parameters ?? []),
-  ]) {
-    const parameter = dereference(raw);
-    if (!["path", "query"].includes(parameter.in)) {
-      throw new Error(`Unsupported parameter location in ${path}`);
-    }
-    const schema = dereference(parameter.schema ?? {});
-    parameters.set(`${parameter.in}:${parameter.name}`, {
-      name: parameter.name,
-      location: parameter.in,
-      required: parameter.in === "path" || parameter.required === true,
-      type: schema.type,
-      description: parameter.description,
-    });
-  }
-
-  // A few documented paths omit their path parameters from the schema.
-  for (const match of path.matchAll(/\{([^}]+)\}/g)) {
-    const name = match[1]!;
-    if (!parameters.has(`path:${name}`)) {
-      parameters.set(`path:${name}`, {
-        name,
-        location: "path",
-        required: true,
+    for (const raw of [
+      ...(item.parameters ?? []),
+      ...(operation.parameters ?? []),
+    ]) {
+      const parameter = dereference(raw);
+      if (!["path", "query"].includes(parameter.in)) {
+        throw new Error(`Unsupported parameter location in ${path}`);
+      }
+      const schema = dereference(parameter.schema ?? {});
+      parameters.set(`${parameter.in}:${parameter.name}`, {
+        name: parameter.name,
+        location: schema.format === "binary" ? "file" : parameter.in,
+        required: parameter.in === "path" || parameter.required === true,
+        type: schema.type,
+        description: parameter.description,
       });
     }
-  }
 
-  endpoints.push({
-    task,
-    path: `/1${path}`,
-    summary: item.get.summary ?? `GET ${path}`,
-    parameters: [...parameters.values()],
-    ...(path.endsWith("/download") ? { download: true } : {}),
-  });
+    // A few documented paths omit their path parameters from the schema.
+    for (const match of path.matchAll(/\{([^}]+)\}/g)) {
+      const name = match[1]!;
+      if (!parameters.has(`path:${name}`)) {
+        parameters.set(`path:${name}`, {
+          name,
+          location: "path",
+          required: true,
+        });
+      }
+    }
+
+    const bodyContent = operation.requestBody?.content;
+    if (
+      bodyContent &&
+      Object.keys(bodyContent).some((type) => type !== "application/json")
+    ) {
+      throw new Error(
+        `Unsupported request body content type in ${method} ${path}`,
+      );
+    }
+    const bodySchema = dereference(
+      bodyContent?.["application/json"]?.schema ?? {},
+    );
+    endpoints.push({
+      task,
+      method: method.toUpperCase() as HttpMethod,
+      path: `/1${path}`,
+      summary: operation.summary ?? `${method.toUpperCase()} ${path}`,
+      parameters: [...parameters.values()],
+      ...(bodyContent
+        ? {
+            jsonBody: {
+              required: operation.requestBody?.required === true,
+              requiredFields: bodySchema.required ?? [],
+              fields: Object.keys(bodySchema.properties ?? {}),
+            },
+          }
+        : {}),
+      ...(method === "get" && path.endsWith("/download")
+        ? { download: true }
+        : {}),
+    });
+  }
 }
 
 endpoints.sort((a, b) => (a.task < b.task ? -1 : a.task > b.task ? 1 : 0));
@@ -139,24 +181,24 @@ for (const endpoint of endpoints) {
 }
 
 await emit(
-  `${root}/spec/read-endpoints.json`,
+  `${root}/spec/endpoints.json`,
   JSON.stringify(endpoints, null, 2) + "\n",
 );
 const inventory = [
-  "# Read endpoint inventory",
+  "# API endpoint inventory",
   "",
-  "Generated from `spec/trello.openapi.json`. All GET operations are included.",
+  "Generated from `spec/trello.openapi.json`. All documented HTTP operations are included.",
   "Path placeholders become `by-NAME` directories; pass their values as `--NAME VALUE`.",
   "",
-  "| Mise task | API path | Description |",
-  "| --- | --- | --- |",
+  "| Mise task | Method | API path | Description |",
+  "| --- | --- | --- | --- |",
   ...endpoints.map(
     (endpoint) =>
-      `| \`${endpoint.task}\` | \`${endpoint.path}\` | ${endpoint.summary.replaceAll("|", "\\|")} |`,
+      `| \`${endpoint.task}\` | ${endpoint.method} | \`${endpoint.path}\` | ${endpoint.summary.replaceAll("|", "\\|")} |`,
   ),
   "",
 ];
 await emit(`${root}/docs/endpoints.md`, inventory.join("\n"));
 console.log(
-  `${check ? "Checked" : "Generated"} ${endpoints.length} GET endpoint tasks`,
+  `${check ? "Checked" : "Generated"} ${endpoints.length} API endpoint tasks`,
 );

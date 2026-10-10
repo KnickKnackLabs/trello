@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:cards:by-id:pluginData:get",
+  "method": "GET",
   "path": "/1/cards/{id}/pluginData",
   "summary": "Get pluginData on a Card",
   "parameters": [

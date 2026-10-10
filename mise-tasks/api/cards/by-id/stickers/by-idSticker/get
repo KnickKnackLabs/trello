@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:cards:by-id:stickers:by-idSticker:get",
+  "method": "GET",
   "path": "/1/cards/{id}/stickers/{idSticker}",
   "summary": "Get a Sticker on a Card",
   "parameters": [

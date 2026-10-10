@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:enterprises:by-id:members:get",
+  "method": "GET",
   "path": "/1/enterprises/{id}/members",
   "summary": "Get Members of Enterprise",
   "parameters": [

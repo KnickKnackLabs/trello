@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:members:by-id:savedSearches:by-idSearch:get",
+  "method": "GET",
   "path": "/1/members/{id}/savedSearches/{idSearch}",
   "summary": "Get a saved search",
   "parameters": [

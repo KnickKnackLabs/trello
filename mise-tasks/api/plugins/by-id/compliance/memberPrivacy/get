@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:plugins:by-id:compliance:memberPrivacy:get",
+  "method": "GET",
   "path": "/1/plugins/{id}/compliance/memberPrivacy",
   "summary": "Get Plugin's Member privacy compliance",
   "parameters": [

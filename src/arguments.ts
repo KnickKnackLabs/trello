@@ -1,31 +1,61 @@
 import type { Endpoint, Parameter } from "./endpoint.ts";
 
+export type ParsedArguments = {
+  path: string;
+  uploads: { name: string; file: string }[];
+  json?: { kind: "inline" | "file"; value: string };
+};
+
 export function endpointHelp(endpoint: Endpoint): string {
   const lines = [
     endpoint.summary,
-    `GET ${endpoint.path}`,
+    `${endpoint.method} ${endpoint.path}`,
     "",
     `Usage: mise run ${endpoint.task} -- [options]`,
     "",
   ];
+  if (endpoint.method !== "GET") {
+    lines.push(
+      "WARNING: This command changes Trello data immediately. No confirmation or retries.",
+      "",
+    );
+  }
   for (const parameter of endpoint.parameters) {
     const requirement = parameter.required ? "required" : "optional";
     lines.push(
-      `  --${parameter.name} VALUE (${parameter.location}, ${requirement}${parameter.type ? `, ${parameter.type}` : ""})`,
+      `  --${parameter.name} ${parameter.location === "file" ? "FILE" : "VALUE"} (${parameter.location}, ${requirement}${parameter.type ? `, ${parameter.type}` : ""})`,
     );
     if (parameter.description) lines.push(`    ${parameter.description}`);
+  }
+  if (endpoint.method !== "GET") {
+    lines.push(
+      "  --body-json JSON (JSON object request body)",
+      "  --body-file FILE (read a JSON object request body from a file)",
+    );
+    if (endpoint.jsonBody) {
+      lines.push(
+        `    Documented JSON fields: ${endpoint.jsonBody.fields.join(", ") || "nested/alternative schema; see API reference"}`,
+      );
+      if (endpoint.jsonBody.required)
+        lines.push("    This endpoint requires a JSON body.");
+      if (endpoint.jsonBody.requiredFields.length) {
+        lines.push(
+          `    Required body fields: ${endpoint.jsonBody.requiredFields.join(", ")}`,
+        );
+      }
+    }
   }
   lines.push(
     "  --param NAME=VALUE (extra query parameter; repeatable)",
     "  --help (show this help without credentials or network access)",
     "",
     "Booleans require explicit true/false. Arrays use comma-separated values.",
-    "One API page is returned; pagination is controlled by API parameters.",
+    "GET commands return one API page; use API parameters to paginate.",
   );
   return lines.join("\n") + "\n";
 }
 
-function validateValue(parameter: Parameter, value: string) {
+export function validateValue(parameter: Parameter, value: string) {
   if (parameter.required && !value)
     throw new Error(`--${parameter.name} cannot be empty`);
   if (parameter.type === "boolean" && !["true", "false"].includes(value)) {
@@ -44,10 +74,15 @@ function validateValue(parameter: Parameter, value: string) {
   }
 }
 
-/** Parse only declared flags; --param is the explicit schema-gap escape hatch. */
-export function endpointPath(endpoint: Endpoint, args: string[]): string {
+/** Parse without filesystem or network access; payload loading is a separate step. */
+export function parseArguments(
+  endpoint: Endpoint,
+  args: string[],
+): ParsedArguments {
   const values = new Map<string, string>();
   const query = new URLSearchParams();
+  const uploads: ParsedArguments["uploads"] = [];
+  let json: ParsedArguments["json"];
   const parameters = new Map(
     endpoint.parameters.map((parameter) => [parameter.name, parameter]),
   );
@@ -63,6 +98,16 @@ export function endpointPath(endpoint: Endpoint, args: string[]): string {
       throw new Error(`--${name} requires a value`);
     }
 
+    if (["body-json", "body-file"].includes(name)) {
+      if (endpoint.method === "GET")
+        throw new Error("GET commands do not accept request bodies");
+      if (json)
+        throw new Error("Use exactly one of --body-json or --body-file");
+      if (!value) throw new Error(`--${name} cannot be empty`);
+      json = { kind: name === "body-json" ? "inline" : "file", value };
+      continue;
+    }
+
     if (name === "param") {
       const separator = value.indexOf("=");
       if (separator < 1) throw new Error("--param requires NAME=VALUE");
@@ -72,13 +117,15 @@ export function endpointPath(endpoint: Endpoint, args: string[]): string {
           "Credentials must come from the environment, not --param",
         );
       }
-      if (parameters.get(queryName)?.location === "path") {
-        throw new Error(`Use --${queryName} for the path parameter`);
+      const declared = parameters.get(queryName);
+      if (declared && declared.location !== "query") {
+        throw new Error(
+          `Use --${queryName} for the ${declared.location} parameter`,
+        );
       }
       if (query.has(queryName))
         throw new Error(`Duplicate query parameter: ${queryName}`);
       const queryValue = value.slice(separator + 1);
-      const declared = parameters.get(queryName);
       if (declared) validateValue(declared, queryValue);
       query.set(queryName, queryValue);
       continue;
@@ -93,21 +140,31 @@ export function endpointPath(endpoint: Endpoint, args: string[]): string {
       throw new Error(`Duplicate option: --${name}`);
     }
     validateValue(parameter, value);
-    // Dot segments are normalized by URL, even when percent-encoded.
     if (parameter.location === "path" && [".", ".."].includes(value)) {
       throw new Error(`--${name} cannot be a dot segment`);
     }
     values.set(name, value);
     if (parameter.location === "query") query.set(name, value);
+    if (parameter.location === "file") {
+      if (!value) throw new Error(`--${name} cannot be empty`);
+      uploads.push({ name, file: value });
+    }
   }
 
+  if (json && uploads.length)
+    throw new Error("JSON bodies and multipart uploads cannot be combined");
+  if (endpoint.jsonBody?.required && !json)
+    throw new Error("This endpoint requires --body-json or --body-file");
   for (const parameter of endpoint.parameters) {
     const provided =
-      parameter.location === "path"
-        ? values.has(parameter.name)
-        : query.has(parameter.name);
-    if (parameter.required && !provided)
+      parameter.location === "query"
+        ? query.has(parameter.name)
+        : values.has(parameter.name);
+    // A JSON payload can supply query-style write fields. Check those after loading it.
+    const deferredToBody = parameter.location === "query" && json;
+    if (parameter.required && !provided && !deferredToBody) {
       throw new Error(`Missing required --${parameter.name}`);
+    }
   }
 
   const path = endpoint.path.replace(/\{([^}]+)\}/g, (_, name: string) => {
@@ -116,5 +173,14 @@ export function endpointPath(endpoint: Endpoint, args: string[]): string {
     return encodeURIComponent(value);
   });
   const suffix = query.toString();
-  return suffix ? `${path}?${suffix}` : path;
+  return {
+    path: suffix ? `${path}?${suffix}` : path,
+    uploads,
+    ...(json ? { json } : {}),
+  };
+}
+
+/** Convenient URL-only interface for read commands and argument tests. */
+export function endpointPath(endpoint: Endpoint, args: string[]): string {
+  return parseArguments(endpoint, args).path;
 }

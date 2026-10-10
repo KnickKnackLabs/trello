@@ -6,6 +6,7 @@ import { runEndpoint } from "../../../src/run-endpoint.ts";
 
 await runEndpoint({
   "task": "api:emoji:get",
+  "method": "GET",
   "path": "/1/emoji",
   "summary": "List available Emoji",
   "parameters": [
