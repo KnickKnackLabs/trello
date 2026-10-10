@@ -1,0 +1,13 @@
+{
+  "name": "trello",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.0",
+    "prettier": "3.6.2",
+    "typescript": "^5.9.3"
+  }
+}

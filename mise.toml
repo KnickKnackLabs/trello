@@ -1,0 +1,30 @@
+[tools]
+bun = "1.4.2"
+
+[tasks.check]
+description = "Run types, offline tests, and generation consistency checks"
+depends = ["typecheck", "test", "generate-check", "format-check"]
+
+[tasks.typecheck]
+description = "Check TypeScript types"
+run = "bun run typecheck"
+
+[tasks.test]
+description = "Run offline tests (no Trello credentials needed)"
+run = "bun test"
+
+[tasks.generate]
+description = "Regenerate GET endpoint tasks from the pinned schema"
+run = "bun scripts/generate.ts"
+
+[tasks.format]
+description = "Format authored source and documentation"
+run = "bunx --no-install prettier --write ."
+
+[tasks.format-check]
+description = "Check authored source and documentation formatting"
+run = "bunx --no-install prettier --check ."
+
+[tasks.generate-check]
+description = "Verify generated tasks match the pinned schema"
+run = "bun scripts/generate.ts --check"

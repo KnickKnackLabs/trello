@@ -1,0 +1,5 @@
+bun.lock
+spec/trello.openapi.json
+spec/read-endpoints.json
+mise-tasks/
+docs/endpoints.md
