@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Show the Trello CLI version"
+set -euo pipefail
+printf 'trello %s\n' "$(< "${MISE_CONFIG_ROOT:?}/VERSION")"

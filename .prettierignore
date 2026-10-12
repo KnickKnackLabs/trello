@@ -1,5 +1,8 @@
 bun.lock
 spec/trello.openapi.json
 spec/endpoints.json
-mise-tasks/
+.mise/tasks/api/
+artifacts/
+logs/
 docs/endpoints.md
+README.md

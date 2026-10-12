@@ -64,7 +64,7 @@ test("catalog includes exactly every HTTP operation in the pinned reference", ()
 describe("every documented endpoint", () => {
   for (const endpoint of endpoints) {
     test(`${endpoint.task}: real entry point and one correctly prepared operation`, async () => {
-      const taskPath = `${root}/mise-tasks/${endpoint.task.replaceAll(":", "/")}`;
+      const taskPath = `${root}/.mise/tasks/${endpoint.task.replaceAll(":", "/")}`;
       await access(taskPath, constants.X_OK);
       expect(await Bun.file(taskPath).text()).toContain(
         JSON.stringify(endpoint, null, 2),
@@ -121,7 +121,7 @@ describe("every documented endpoint", () => {
 });
 
 test("invalid write arguments fail without credentials or network access", async () => {
-  const child = Bun.spawn(["bun", "mise-tasks/api/cards/post"], {
+  const child = Bun.spawn(["bun", ".mise/tasks/api/cards/post"], {
     cwd: root,
     env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
     stdout: "pipe",
@@ -133,7 +133,7 @@ test("invalid write arguments fail without credentials or network access", async
 });
 
 test("boards:list alias keeps read behavior and member-board query options", async () => {
-  const child = Bun.spawn(["bun", "mise-tasks/boards/list", "--help"], {
+  const child = Bun.spawn(["bun", ".mise/tasks/boards/list", "--help"], {
     cwd: root,
     env: { ...process.env, TRELLO_API_KEY: "", TRELLO_TOKEN: "" },
     stdout: "pipe",

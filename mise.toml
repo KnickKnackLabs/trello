@@ -1,9 +1,24 @@
+[settings]
+quiet = true
+task_output = "interleave"
+experimental = true
+
+[plugins]
+shiv = "https://github.com/KnickKnackLabs/vfox-shiv"
+
 [tools]
 bun = "1.4.2"
+"shiv:codebase" = "0.5"
+"shiv:readme" = "0.3"
+
+[_.codebase]
+name = "trello"
+lint = ["@all"]
+ci_lint_gate = "mise run validate --verbose"
 
 [tasks.check]
-description = "Run types, offline tests, and generation consistency checks"
-depends = ["typecheck", "test", "generate-check", "format-check"]
+description = "Compatibility alias for the complete validation gate"
+run = "mise run validate"
 
 [tasks.typecheck]
 description = "Check TypeScript types"
@@ -11,10 +26,12 @@ run = "bun run typecheck"
 
 [tasks.test]
 description = "Run offline tests (no Trello credentials needed)"
+depends = ["schema:fetch"]
 run = "bun test"
 
 [tasks.generate]
-description = "Regenerate GET endpoint tasks from the pinned schema"
+description = "Regenerate API endpoint tasks from the pinned schema"
+depends = ["schema:fetch"]
 run = "bun scripts/generate.ts"
 
 [tasks.format]
@@ -27,4 +44,5 @@ run = "bunx --no-install prettier --check ."
 
 [tasks.generate-check]
 description = "Verify generated tasks match the pinned schema"
+depends = ["schema:fetch"]
 run = "bun scripts/generate.ts --check"

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Show Trello CLI usage and safety boundaries"
+set -euo pipefail
+printf '%s\n' \
+  'Usage: trello COMMAND -- ARGUMENTS' \
+  '' \
+  'trello tasks                              List commands' \
+  'trello version                            Show CLI version' \
+  'trello boards:list                        List your boards' \
+  'trello api:cards:post -- --help            Endpoint help' \
+  'trello api:cards:post -- --body-file FILE   Create a card' \
+  '' \
+  'Use -- before endpoint arguments, especially --help, to bypass mise flags.' \
+  'Supply TRELLO_API_KEY and TRELLO_TOKEN in the environment, never arguments.' \
+  'Writes act immediately. No retries, confirmation, dry-run, or rollback.' \
+  'JSON stdout; diagnostics stderr. Each GET returns one API page.'

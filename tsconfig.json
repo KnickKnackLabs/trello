@@ -13,6 +13,6 @@
     "src/**/*.ts",
     "scripts/**/*.ts",
     "tests/**/*.ts",
-    "mise-tasks/**/*"
+    ".mise/tasks/**/*"
   ]
 }

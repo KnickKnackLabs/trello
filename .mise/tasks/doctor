@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#MISE description="Check local tools and report optional pre-commit hook status"
+set -euo pipefail
+failed=0
+for tool in mise bun; do
+  if command -v "$tool" >/dev/null 2>&1; then
+    printf '%s: available\n' "$tool"
+  else
+    printf '%s: missing\n' "$tool" >&2
+    failed=1
+  fi
+done
+repo="${MISE_CONFIG_ROOT:?}"
+hook="$repo/.git/hooks/pre-commit.d/codebase"
+if [ -x "$hook" ]; then
+  printf 'Optional Codebase pre-commit hook: installed\n'
+else
+  printf 'Optional Codebase pre-commit hook: not installed (codebase pre-commit)\n'
+fi
+printf 'Credentials are not inspected. For acceptance, run mise run validate.\n'
+exit "$failed"

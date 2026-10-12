@@ -1,28 +1,35 @@
 # API schema provenance
 
-`trello.openapi.json` is Atlassian's published Trello OpenAPI v3 document,
-downloaded on 2026-10-09 from:
+The upstream OpenAPI document is a development input, **not tracked in Git**.
+Fetch it only when generating or validating the catalog:
 
+```sh
+mise run schema:fetch
+mise run generate
+```
+
+The task downloads from Atlassian's official URL:
 <https://dac-static.atlassian.com/cloud/trello/swagger.v3.json?_v=1.1274.0>
 
-This URL was linked by the official [Actions reference](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/).
-The document's internal API version is `0.0.1`; it is not a meaningful snapshot
-date. The checked-in bytes, rather than the remote URL, are the generation input.
-Their SHA-256 is `b07c97d06e93f7caff661a307e86f2b58c1f97591614ac8179f8e31bda27334b`.
+This URL was linked by the official
+[Actions reference](https://developer.atlassian.com/cloud/trello/rest/api-group-actions/).
+The October 9, 2026 snapshot is pinned by SHA-256:
+`b07c97d06e93f7caff661a307e86f2b58c1f97591614ac8179f8e31bda27334b`.
+The internal API version `0.0.1` is not a useful snapshot date. A checksum mismatch
+fails without replacing the cache; changing the pin requires explicit review.
+The cache is `spec/trello.openapi.json`, covered by `.gitignore`. Installed CLI
+commands use generated metadata and never need this file or the fetch task.
 
-`endpoints.json` is generated metadata for every HTTP operation in that snapshot:
-128 GET, 45 POST, 51 PUT, and 37 DELETE (261 total). Method/path pairs, not
-operation IDs, are authoritative; some operation IDs misleadingly start with
-`post` even for GET operations.
+`endpoints.json` contains normalized API facts: methods, paths, argument types,
+required fields, and body field names. Help descriptions are generated from
+method/path/parameter names, not copied upstream prose. The catalog has 261
+operations: 128 GET, 45 POST, 51 PUT, and 37 DELETE.
 
-Path-item and operation parameters are merged, with the operation overriding
-matching path-item declarations. Missing placeholder declarations are inferred
-from the route. All generated routes are rooted at the schema's `/1` API version.
-Binary parameters are normalized to file-upload metadata even though upstream
-lists them as query parameters; their descriptions/schema specify multipart
-uploads. JSON body field names and top-level requirements are retained for help
-and basic validation. Unsupported body content types fail generation explicitly.
+Path-item and operation parameters are merged. Missing path placeholders are
+inferred; binary query parameters become multipart file parameters. JSON body
+field names and top-level requirements are retained for help and validation.
+Unsupported body content types stop generation.
 
-This schema is upstream reference data, not our authored code. No separate
-license is declared in its `info` object. Confirm upstream redistribution terms
-before public publication. No GitHub repo or release has been created.
+The upstream schema has no separate license declared in its `info` object.
+On-demand retrieval avoids bundling the raw document in this repository; it
+does not assert a license grant for that third-party document.

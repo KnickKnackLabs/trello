@@ -4,3 +4,7 @@ node_modules/
 !.env.example
 mise.local.toml
 .DS_Store
+spec/trello.openapi.json
+spec/trello.openapi.json.*.tmp
+artifacts/
+logs/

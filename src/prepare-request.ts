@@ -1,5 +1,5 @@
 import { stat } from "node:fs/promises";
-import { basename } from "node:path";
+import { basename, resolve } from "node:path";
 import type { ApiRequest } from "./api.ts";
 import type { Endpoint } from "./endpoint.ts";
 import { parseArguments, validateValue } from "./arguments.ts";
@@ -9,6 +9,11 @@ export type PayloadFiles = {
   readUpload: (path: string) => Promise<File>;
 };
 
+/** Shiv changes cwd to the installed package; resolve files at invocation time. */
+export function payloadPath(path: string): string {
+  return resolve(process.env.TRELLO_CALLER_PWD || process.cwd(), path);
+}
+
 async function requireRegularFile(path: string) {
   if (!(await stat(path)).isFile()) throw new Error("Expected a regular file");
 }
@@ -16,16 +21,18 @@ async function requireRegularFile(path: string) {
 export const localPayloadFiles: PayloadFiles = {
   readText: async (path) => {
     try {
-      await requireRegularFile(path);
-      return await Bun.file(path).text();
+      const resolved = payloadPath(path);
+      await requireRegularFile(resolved);
+      return await Bun.file(resolved).text();
     } catch {
       throw new Error("Cannot read JSON request body file");
     }
   },
   readUpload: async (path) => {
     try {
-      await requireRegularFile(path);
-      const file = Bun.file(path);
+      const resolved = payloadPath(path);
+      await requireRegularFile(resolved);
+      const file = Bun.file(resolved);
       return new File([await file.arrayBuffer()], basename(path), {
         type: file.type,
       });
