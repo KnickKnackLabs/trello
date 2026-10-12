@@ -22,6 +22,7 @@ run = "mise run validate"
 
 [tasks.typecheck]
 description = "Check TypeScript types"
+depends = ["schema:fetch"]
 run = "bun run typecheck"
 
 [tasks.test]
