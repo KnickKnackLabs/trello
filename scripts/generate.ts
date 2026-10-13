@@ -185,21 +185,6 @@ await emit(
   `${root}/spec/endpoints.json`,
   JSON.stringify(endpoints, null, 2) + "\n",
 );
-const inventory = [
-  "# API endpoint inventory",
-  "",
-  "Generated from the pinned, locally fetched schema (`mise run schema:fetch`). All documented HTTP operations are included.",
-  "Path placeholders become `by-NAME` directories; pass their values as `--NAME VALUE`.",
-  "",
-  "| Mise task | Method | API path | Description |",
-  "| --- | --- | --- | --- |",
-  ...endpoints.map(
-    (endpoint) =>
-      `| \`${endpoint.task}\` | ${endpoint.method} | \`${endpoint.path}\` | ${endpoint.summary.replaceAll("|", "\\|")} |`,
-  ),
-  "",
-];
-await emit(`${root}/docs/endpoints.md`, inventory.join("\n"));
 console.log(
   `${check ? "Checked" : "Generated"} ${endpoints.length} API endpoint tasks`,
 );

@@ -20,11 +20,11 @@ mise run validate
 - `src/prepare-request.ts`: payload loading and multipart construction. Caller-relative files use `TRELLO_CALLER_PWD`, evaluated at request time.
 - `src/api.ts`: authenticated transport, timeouts, and download policy. Never automatically retry a write.
 - `src/run-endpoint.ts` and `src/write-response.ts`: execution and output.
-- `scripts/generate.ts`: executable endpoint tasks, catalog, inventory.
+- `scripts/generate.ts`: executable endpoint tasks and catalog.
 - `scripts/schema.ts`: official schema URL, checksum, cache verification.
 - `README.tsx`: README source; run `readme build` after editing it.
 
-Generated `.mise/tasks/api/`, `spec/endpoints.json`, and `docs/endpoints.md` stay committed so installed commands need neither the schema nor generation. The raw `spec/trello.openapi.json` is ignored. `mise run schema:fetch` retrieves it on demand and refuses a checksum mismatch. A schema update is deliberate: review upstream changes, update the URL/checksum, regenerate, and inspect additions/removals. Never silently accept a changed upstream file.
+Generated `.mise/tasks/api/` and `spec/endpoints.json` stay committed so installed commands need neither the schema nor generation. The raw `spec/trello.openapi.json` is ignored. `mise run schema:fetch` retrieves it on demand and refuses a checksum mismatch. A schema update is deliberate: review upstream changes, update the URL/checksum, regenerate, and inspect additions/removals. Never silently accept a changed upstream file.
 
 ## Validation contract
 
