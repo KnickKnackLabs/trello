@@ -35,21 +35,21 @@ Get an API key and token from [Trello Auth](https://trello.com/apps/admin), then
 
 ```bash
 # List your boards, then read a board's cards.
-trello boards:list
-trello api:boards:by-id:cards:get -- --id BOARD_ID
+trello boards list
+trello api boards by-id cards get --id BOARD_ID
 
 # Find commands and inspect their arguments.
 trello tasks
-trello api:cards:post -- --help
+trello api cards post -- --help
 
 # Create a card from a JSON file containing idList, name, and optional desc.
-trello api:cards:post -- --body-file card.json
+trello api cards post --body-file card.json
 
 # Attach a local file to a card.
-trello api:cards:by-id:attachments:post -- --id CARD_ID --file screenshot.png
+trello api cards by-id attachments post --id CARD_ID --file screenshot.png
 ```
 
-Use `--` before endpoint arguments so mise passes them to the command, including `--help`.
+For endpoint help, use `-- --help`; bare `--help`shows mise task help instead. Other endpoint flags need no separator.
 
 <details>
 <summary><b>Operational notes</b></summary>

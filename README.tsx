@@ -58,21 +58,21 @@ shiv = "https://github.com/KnickKnackLabs/vfox-shiv"
 
     <Section title="Run">
       <CodeBlock lang="bash">{`# List your boards, then read a board's cards.
-trello boards:list
-trello api:boards:by-id:cards:get -- --id BOARD_ID
+trello boards list
+trello api boards by-id cards get --id BOARD_ID
 
 # Find commands and inspect their arguments.
 trello tasks
-trello api:cards:post -- --help
+trello api cards post -- --help
 
 # Create a card from a JSON file containing idList, name, and optional desc.
-trello api:cards:post -- --body-file card.json
+trello api cards post --body-file card.json
 
 # Attach a local file to a card.
-trello api:cards:by-id:attachments:post -- --id CARD_ID --file screenshot.png`}</CodeBlock>
+trello api cards by-id attachments post --id CARD_ID --file screenshot.png`}</CodeBlock>
       <Paragraph>
-        Use <Code>--</Code> before endpoint arguments so mise passes them to the
-        command, including <Code>--help</Code>.
+        For endpoint help, use <Code>-- --help</Code>; bare <Code>--help</Code>
+        shows mise task help instead. Other endpoint flags need no separator.
       </Paragraph>
     </Section>
 

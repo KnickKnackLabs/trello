@@ -57,8 +57,15 @@ async function run(
   args: string[],
   env = {},
 ) {
+  // Exercise the preferred installed syntax, not just mise's colon task names.
+  // --help is special: mise consumes it unless explicitly passed through.
   const command = shim
-    ? [shim, task, "--", ...args]
+    ? [
+        shim,
+        ...task.split(":"),
+        ...(args.includes("--help") ? ["--"] : []),
+        ...args,
+      ]
     : ["mise", "-C", root, "run", task, "--", ...args];
   const p = Bun.spawn(command, {
     cwd: f.dir,
