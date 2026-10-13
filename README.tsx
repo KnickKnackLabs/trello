@@ -25,6 +25,7 @@ const endpoints = JSON.parse(
 console.log(
   <>
     <Center>
+      <Raw>{`<img src="assets/trello.webp" alt="A woman sticking her tongue out at a kitchen table" width="800">\n\n`}</Raw>
       <Heading level={1}>trello</Heading>
       <Badges>
         <Badge label="endpoints" value={`${endpoints.length}`} color="blue" />

@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/trello.webp" alt="A woman sticking her tongue out at a kitchen table" width="800">
+
 # trello
 
 ![endpoints: 261](https://img.shields.io/badge/endpoints-261-blue?style=flat)
